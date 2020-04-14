@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>主页</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+<link rel="stylesheet" href="../css/bootstrap.css">
+<link href="../iconfont/style.css" type="text/css" rel="stylesheet">
+<script type="text/javascript" src="/SSM1109test1/jquery-1.8.3.js"></script>
+<style>
+body {
+color:#fff; font-family:"微软雅黑"; font-size:14px;
+}
+.wrap1{position:absolute; 
+ top:0;
+ right:0; 
+ bottom:0; 
+ left:0; 
+ margin:auto }/*把整个屏幕真正撑开--而且能自己实现居中*/
+.main_content{
+	background:url(../images/main_bg.png) repeat; 
+	margin-left:auto; 
+	margin-right:auto; 
+	text-align:left; 
+	float:none; 
+	border-radius:8px;}
+	@media (min-width:200px){.pd-xs-20{padding:20px;}}
+	@media (min-width:768px){.pd-sm-50{padding:50px;}}
+
+</style>
+</head>
+<body style="background:url(../images/bg.jpg) no-repeat;">
+	<div class="container wrap1" style="height:450px;">
+		<h2 class=" text-center">凯煌公司主页面</h2>
+	 	<div class=" col-md-5  pd-sm-50  main_content">
+	<form id="asd">
+		<table id="tableName">
+		
+		</table>
+	</form>
+	</div>
+	</div>
+</body>
+<script type="text/javascript">
+	$(document).ready(function(){
+		$.ajax({
+			url:"/SSM1109test1/test/form",
+			type:'post',
+			data:$('#asd').serialize(),
+			dataType:'json',
+			success:function(data){
+				var context="<tr><td>id</td><td>用户名</td><td>密码</td><td>性别</td><td>年龄</td></tr>";
+				for(var i=0;i<data.length;i++){
+					context = context+"<tr><td>"+data[i].id+"</td><td>"+data[i].username+"</td><td>"+data[i].pwd+"</td><td>"+data[i].sex+"</td><td>"+data[i].age+"</td><td><button onclick='delete("+data[i].id+")' type='button'>删除</button><a href='/SSM1109test1/html/update.html'>修改</a></td></tr>";
+					document.getElementById("tableName").innerHTML=context;
+				}
+				
+			}
+		});
+	})
+	</script>
+</html>

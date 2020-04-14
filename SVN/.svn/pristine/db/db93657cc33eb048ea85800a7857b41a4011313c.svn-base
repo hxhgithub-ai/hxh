@@ -1,0 +1,53 @@
+package com.bin.service.imp;
+
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.bin.dao.SDao;
+import com.bin.service.SService;
+
+@Service
+public class SSericeImp implements SService {
+
+	@Autowired
+	SDao dao;
+
+	//µÇÂ½
+	@Override
+	public Object login(Map map) {
+		//»ñÈ¡mapµÄÖµ
+		List<Map> list = dao.login(map);
+		System.out.println("µÇÂ½service");
+		System.out.println(list);
+		//ÅÐ¶ÏlistÊÇ·ñÎª¿Õ
+		return list.size()!=0?"success":"kong";
+	}
+
+	//×¢²á
+	@Override
+	public Object reg(Map map) {
+		int i = dao.reg(map);
+		System.out.println("×¢²áservice");
+		System.out.println(i);
+		return i!=0?"success":"kong";
+	}
+
+	//Ê×Ò³
+	@Override
+	public Object form(Map map) {
+		return dao.form(map);
+	}
+   //µç×®
+	@Override
+	public Object dianzhuang(Map map) {
+		
+		return dao.dianzhuang(map);
+	}
+	
+	
+	
+	
+}

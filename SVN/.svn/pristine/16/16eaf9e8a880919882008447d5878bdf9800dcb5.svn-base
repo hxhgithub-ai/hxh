@@ -1,0 +1,23 @@
+package com.bin.service;
+
+import java.util.Map;
+
+public interface SService{
+
+	//登陆
+	public Object login(Map map);
+	
+	//注册
+	public Object reg(Map map);
+	
+	//首页
+	public Object form(Map map);
+	//电桩
+	public Object dianzhuang(Map map);
+
+	//充电消费记录
+	public 	Object xiaofei(Map map);
+	//留言
+	public Object liuyan(Map map); 
+
+}

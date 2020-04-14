@@ -1,0 +1,23 @@
+package com.bin.dao;
+
+import java.util.List;
+import java.util.Map;
+
+
+public interface SDao {
+	//登陆
+	public List<Map> login(Map map);
+	//注册
+	public int reg(Map map);
+	//首页
+	public List<Map> form(Map map);
+	//电桩
+	public List<Map>dianzhuang(Map map);
+
+	//充电消费记录
+	public List<Map>xiaofei(Map map);
+
+	//留言中心
+	public List<Map>liuyan(Map map);
+
+}

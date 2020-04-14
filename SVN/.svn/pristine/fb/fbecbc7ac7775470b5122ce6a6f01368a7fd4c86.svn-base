@@ -1,0 +1,18 @@
+package com.bin.dao;
+
+import java.util.List;
+import java.util.Map;
+
+
+public interface SDao {
+	//µÇÂ½
+	public List<Map> login(Map map);
+	//×¢²á
+	public int reg(Map map);
+	//Ê×Ò³
+	public List<Map> form(Map map);
+	//µç×®
+	public List<Map>dianzhuang(Map map);
+	//ÁôÑÔÖĞĞÄ
+	public List<Map>liuyan(Map map);
+}

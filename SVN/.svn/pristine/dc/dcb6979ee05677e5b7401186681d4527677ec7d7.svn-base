@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+	<mapper namespace="com.bin.dao.SDao">
+		<!-- 表名 -->
+		<sql id="tableName">
+			user
+		</sql>
+		<!-- 电桩表名-->
+		<sql id="dz">
+			dianzhuang
+		</sql>
+		<!-- 留言板表名 -->
+		<sql id="liuyan">
+			liuyan
+		</sql>
+		<!-- 字段名 -->
+		<sql id="Field">
+			username,pwd
+		</sql>
+		<!-- 字段值 -->
+		<sql id="FieldValue">
+			#{username},#{password}
+		</sql>
+		<!-- 登陆 -->
+		<select id="login" parameterType="map" resultType="map">
+			select 
+			<include refid="Field"></include>
+			from 
+			<include refid="tableName"></include>
+			where 1=1
+			<if test="username!='' and username!=null">
+				and username=#{username}
+				<if test="password!='' and password!=null">
+					and pwd=#{password}
+				</if>
+			</if>
+		</select>
+		
+		<!-- 注册 -->
+		<insert id="reg" parameterType="map" >
+			insert into user(username,pwd)
+			value(#{username},#{password})
+		</insert>
+		
+		<!-- 首页 -->
+		<select id="form" parameterType="map" resultType="map">
+			select * from
+			<include refid="tableName"></include>
+		</select>
+		<!-- 电桩信息-->
+		<select id="dianzhuang" parameterType="map" resultType="map">
+			select * from
+			<include refid="dz"></include>
+		</select>
+		<!-- 留言中心 -->
+		<select id="liuyan" parameterType="map" resultType="map">
+			select * from
+			<include refid="liuyan"></include>
+		</select>
+	</mapper>  

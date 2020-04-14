@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript" src="/SSM1109test1/jquery-1.8.3.js"></script>
+</head>
+<body>
+<h1>注册</h1>
+<form id="asd">
+	<input type="text" name="username" />
+	<input type="password" name="password" />
+	<button type="button" onclick="dianji()">注册</button>
+	<a href="/SSM1109test1/html/login.html">登陆</a>
+</form>
+</body>
+<script type="text/javascript">
+	function dianji(){
+		$.ajax({
+			url:"/SSM1109test1/test/reg",
+			type:"post",
+			data:$('#asd').serialize(),
+			datatype:"text",
+			success:function(data){
+				if(data==="success"){
+					alert("成功");
+					location.href='/SSM1109test1/html/form.html';
+				}else{
+					alert("失败，请重新登录");
+				}
+			}
+		})
+	}
+</script>
+</html>

@@ -1,0 +1,131 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="#" class="loading">
+<head>
+<title>凯煌充电桩</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=0.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+<link rel="stylesheet" type="text/css" href="../css/style.css" />
+<meta content="black" name="apple-mobile-web-app-status-bar-style"/>
+<meta content="telephone=no" name="format-detection"/>
+<link rel="apple-touch-icon-precomposed" href="../images/favicon.ico"/>
+<script type='text/javascript' src="../js/jquery-1.8.3.js"/></script>
+<script>
+function succ(){
+	$.ajax({
+		url:"/SSM1109test1/test/jialiu",
+		type:"post",
+		data:$('#form1').serialize(),
+		datatype:"text",
+		success:function(data){
+			alert("成功")
+			location.href="/SSM1109test1/htmlu/index.html"
+			
+		}
+		
+	})
+	
+	}
+
+</script>
+<style>
+.big{
+ /*border:1px solid #000;*/
+}
+.ying{
+width: 300px;
+height: 30px;
+margin-left: 75px;
+margin-top: 50px;
+}
+textarea{
+margin-left:75px;
+width: 350px;
+height: 100px;
+
+}
+button{
+	width: 250px;
+    height: 42px;
+    float: left;
+    margin-left: 18px;
+    background: #43BE48;
+}
+.li{
+width: 300px;
+height: 50px;
+margin-left: 100px;
+margin-top: 20px;
+}
+</style>
+
+</head>
+
+<body>
+<script>
+var now_page = 1,
+search_value = '';
+</script>
+
+		<div id="menu">
+		<ul>
+			<li class="nav_index menu_cur"><a href="index.html"><i></i><span>首页</span><b></b><div class="clear"></div></a></li>
+			<li class="nav_site"><a href="ditu.html"><i></i><span>附近</span><b></b><div class="clear"></div></a></li>
+			<li class="nav_help"><a href="dingdan.html"><i></i><span>订单</span><b></b><div class="clear"></div></a></li>
+			<li class="nav_about"><a href="ly.html"><i></i><span>用户反馈</span><b></b><div class="clear"></div></a></li>
+			<li class="nav_about"><a href="yhzx.html"><i></i><span>用户中心</span><b></b><div class="clear"></div></a></li>
+		</ul>
+	</div>	
+	<div id="header" style="height: 80px">
+		<div class="wrap">
+			<i class="menu_open"></i>
+			<div class="logo"><a href="#" title="凯煌充电桩"><img src="../css/logo.png" /></a></div>
+			<i class="search_open"></i>
+		</div>
+		<div class="logo_msk"></div>
+	</div>
+	<div id="container">
+		<div id="sort">
+			
+		</div>
+		
+		
+		
+<div class="big">
+	<center><h1>用户反馈</h1></center>
+	<form id="form1">
+	<div class="ying">
+		 <p id="ping">感想您的意见及反馈</p>
+	</div>
+	
+		 <p><textarea  name="title" id="content" rows="2" cols="20"></textarea></p>
+	<div class="li">
+		 <p><button type="button"  id="send" onclick="succ()">提交</button></p>
+	 </div>
+	 </form>
+</div>
+		
+		
+	<div class="copyrights">Collect from <a href="#" >首页</a></div>
+	 <div id="resText"></div>
+	 
+	 </div>
+
+		<div class="push_msk"></div>
+	<div class="loading_dark"></div>
+	<div id="loading_mask">
+		<div class="loading_mask">
+			<ul class="anm">
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+			</ul>
+		</div>
+	</div>
+	<script language="javascript" src="../js/zepto.min.js"></script>
+	<script language="javascript" src="../js/fx.js"></script>
+	<script language="javascript" src="../js/script.js"></script>
+	
+</body>
+</html>

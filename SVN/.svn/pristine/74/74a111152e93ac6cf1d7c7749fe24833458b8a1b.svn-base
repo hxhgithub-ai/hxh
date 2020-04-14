@@ -1,0 +1,69 @@
+package com.bin.service.imp;
+
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.bin.dao.SDao;
+import com.bin.service.SService;
+
+@Service
+public class SSericeImp implements SService {
+
+	@Autowired
+	SDao dao;
+
+	//登陆
+	@Override
+	public Object login(Map map) {
+		//获取map的值
+		List<Map> list = dao.login(map);
+		System.out.println("登陆service");
+		System.out.println(list);
+		//判断list是否为空
+		return list.size()!=0?"success":"kong";
+	}
+
+	//注册
+	@Override
+	public Object reg(Map map) {
+		int i = dao.reg(map);
+		System.out.println("注册service");
+		System.out.println(i);
+		return i!=0?"success":"kong";
+	}
+
+	//首页
+	@Override
+	public Object form(Map map) {
+		return dao.form(map);
+	}
+   //电桩
+	@Override
+	public Object dianzhuang(Map map) {
+		
+		return dao.dianzhuang(map);
+	}
+
+   //充电消费记录
+	@Override
+	public Object xiaofei(Map map) {
+		
+		return dao.xiaofei(map);
+	}
+
+
+//留言
+	@Override
+	public Object liuyan(Map map) {
+		
+		return dao.liuyan(map);
+	}
+
+	
+	
+	
+	
+}

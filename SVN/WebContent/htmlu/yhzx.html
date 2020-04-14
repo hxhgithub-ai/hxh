@@ -1,0 +1,153 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="#" class="loading">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+<meta name="viewport" content="width=device-width, initial-scale=0.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+<meta name="keywords" content="" />
+<meta name="description" content="凯煌充电桩"/>
+<meta name="author" content="" />
+<link rel="stylesheet" type="text/css" href="../css/style.css" />
+<meta content="yes" name="apple-mobile-web-app-capable"/>
+<meta content="black" name="apple-mobile-web-app-status-bar-style"/>
+<meta content="telephone=no" name="format-detection"/>
+<link rel="apple-touch-icon-precomposed" href="../images/favicon.ico"/>
+<script type='text/javascript' src="../js/jquery-1.8.3.js"/> 
+<script>
+var logined = 0
+</script>
+<title>凯煌充电桩</title>
+<style type="">
+.big{
+
+height: 500px;
+}
+.dainyu{
+float:left;
+margin-top:50px;
+margin-left:180px;
+border: 1px green solid;
+width: 150px;
+height: 150px;
+text-align:center;
+line-height: 20px;
+border-radius: 120px;/*div的边角*/
+}
+.yh{
+float:left;
+margin-top:98px;
+margin-left:30px;
+width: 50px;
+height: 100px;
+
+}
+button{
+width: 200px;
+height: 40px;
+float: left;
+background:#53CE58;
+margin-top: 50px;
+margin-left: 165px;
+}
+</style>
+</head>
+
+<body>
+<script>
+var now_page = 1,
+search_value = '';
+</script>
+		<div id="menu">
+		<ul>
+			<li class="nav_index menu_cur"><a href="index.html"><i></i><span>首页</span><b></b><div class="clear"></div></a></li>
+			<li class="nav_site"><a href="ditu.html"><i></i><span>附近</span><b></b><div class="clear"></div></a></li>
+			<li class="nav_help"><a href="dingdan.html"><i></i><span>订单</span><b></b><div class="clear"></div></a></li>
+			<li class="nav_about"><a href="ly.html"><i></i><span>用户反馈</span><b></b><div class="clear"></div></a></li>
+			<li class="nav_about"><a href="gywm.html"><i></i><span>关于我们</span><b></b><div class="clear"></div></a></li>
+			<li class="nav_about"><a href="../htmlu/yhzx.html"><i></i><span>用户中心</span><b></b><div class="clear"></div></a></li>
+		</ul>
+	</div>
+	
+	
+	<div id="header" style="height: 80px">
+		<div class="wrap">
+			<i class="menu_open"></i>
+			<div class="logo"><a href="#" title="凯煌充电桩"><img src="../css/logo.png" /></a></div>
+			<i class="search_open"></i>
+		</div>
+		<div class="logo_msk"></div>
+	</div>
+	<div id="container">
+		<div id="sort">
+			
+		</div>
+		
+		
+		<meta name=”viewport” content=”width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no”>
+		<center>
+		<div class="big">
+		
+			<h1>用户中心</h1>
+			 <form id="xc">
+			 <div class="dainyu">
+			 	<div class="yh">
+			 	<span>余额</span>
+			 	
+			 	</div>
+			 		
+			 		
+			 		<tbody id="t1">
+			 		</tbody>
+			 	
+			 	</div>
+			 
+			 	<button><a href="/SSM1109test1/htmlu/cmony.html">充值中心</a></button>
+			
+			 </form>
+		</div>
+		</center>
+		</meta>
+		
+<div class="copyrights">Collect from <a href="#" >首页</a></div>
+	<div class="push_msk"></div>
+	</div>
+	
+	<div class="loading_dark"></div>
+	<div id="loading_mask">
+		<div class="loading_mask">
+			<ul class="anm">
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+			</ul>
+		</div>
+	</div>
+	<script language="javascript" src="../js/zepto.min.js"></script>
+	<script language="javascript" src="../js/fx.js"></script>
+	<script language="javascript" src="../js/script.js"></script>
+	
+</body>
+<script language="javascript">	
+$.ajax({
+	
+	url:"/SSM1109test1/test/yh",
+	data:$('#xc').serialize(),
+	datatype:'json',
+	success:function(data){
+		alert(data);
+		var xqo =eval('('+data+')');
+		var html=[];
+		for(var i=0;i<xqo.length;i++){
+		//var context="<tr><td>"+xqo.phone+"</td><td>"+xqo.money+"</td></tr>";	
+		html.push("<tr><td style='float:left; margin-top:100px; margin-left:-200px;'>"+xqo[i].phone+"</td>");
+		html.push("<td style='float:left; margin-top:150px; margin-left:-150px;'>"+xqo[i].money+"</td></tr>");
+		
+		$("#xc").append(html.join(""));
+		}
+	}
+})
+	
+</script>
+</html>

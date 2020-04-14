@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+	<mapper namespace="com.bin.dao.SDao">
+		<sql id="vs">
+			vuser
+		</sql>
+		<sql id="tableName">
+			user
+		</sql>
+		<!-- 电桩表名-->
+		<sql id="dz">
+			dianzhuang
+		</sql>
+          <!-- 消费记录-->
+		<sql id="xf">
+			xiaofei
+		</sql>
+
+		<!-- 留言板表名 -->
+		<sql id="liuyan">
+			message
+		</sql>
+
+		<!-- 字段名 -->
+		<sql id="Field">
+			username,pwd
+		</sql>
+		<!-- 字段值 -->
+		<sql id="FieldValue">
+			#{username},#{password}
+		</sql>
+		<!-- 管理员登陆 -->
+		<select id="glogin" parameterType="map" resultType="map">
+			select 
+			<include refid="Field"></include>
+			from 
+			<include refid="vs"></include>
+			where 1=1
+			<if test="username!='' and username!=null">
+				and username=#{username}
+				<if test="password!='' and password!=null">
+					and pwd=#{password}
+				</if>
+			</if>
+		</select>
+		
+		
+		<!-- 电桩信息-->
+		<select id="dianzhuang" parameterType="map" resultType="map">
+			select * from
+			<include refid="dz"></include>
+		</select>
+
+		<!-- 充电消费记录 -->
+		<select id="xiaofei" parameterType="map" resultType="map">
+			select a.*,b.sessionid from xiaofei a,user b where a.id=b.id	
+		</select>
+
+		<!-- 管理员留言中心 -->
+		<select id="liuyan" parameterType="map" resultType="map">
+			select * from
+			<include refid="liuyan"></include>
+		</select>
+		<!-- 电桩删除-->
+		<select id="delete" parameterType="map">
+			delete from
+			<include refid="dz"></include>
+			where dID=#{dID}
+		</select>
+		<!-- 查询有无此sessionid -->
+		<select id="SessionSelect" parameterType="string" resultType="map">
+			select * from 
+			<include refid="tableName"></include>
+			where sessionid = #{sessionid}
+		</select>
+		<!-- 添加消费记录 -->
+		<insert id="sxiaofei" parameterType="map">
+			insert into xiaofei(phone,start,dianzhuang,xiaomoney,time) values(#{phone},#{start},#{dianzhuang},#{money},#{time})
+		</insert>
+		<!-- 添加用户 -->
+		<insert id="userInsert" parameterType="map">
+			insert into user(phone,sessionid,money) values(#{phone},#{sessionid},#{money})
+		</insert>
+		<!-- 查询电桩编号 -->
+		<select id="GetDianzhuang" parameterType="string" resultType="string">
+			select dianzhuang from xiaofei where phone=#{phone}
+		</select>
+		<!-- 查询电桩编号 -->
+		<select id="PhoneSelect" parameterType="string" resultType="string">
+			select phone from user where phone=#{phone}
+		</select>
+		<!-- 更新user表 -->
+		<update id="UpuserByphone" parameterType="map">
+			update user set sessionid=#{sessionid} where phone=#{phone}
+		</update>
+		<!-- 查询是否有余额 -->
+		<select id="MoneySelect" parameterType="string" resultType="string">
+			select money from user where phone=#{phone}
+		</select>
+		<!-- 更新user表账户余额money -->
+		<update id="UpMoney" parameterType="map">
+			update user set money=#{money} where phone=#{phone}
+		</update>
+		<!-- ......................................................................... -->
+		<!-- 添加电桩id和时间 -->
+		<insert id="sess" parameterType="map" >
+			insert into xiaofei(starttime,dianzhuang,xiaomoney)
+			value(#{starttime},#{dianzhuang},#{xiaomony})
+		</insert>
+		<!-- 充值账户 -->
+		<insert id="cmony" parameterType="map" >
+			insert into user(money)
+			value(#{money}) where phone=#{phone}
+		</insert>
+		<!--充值之查询账户余额  -->
+		<select id="smony" parameterType="map" resultType="string">
+			select money from user where phone=#{phone}
+		</select>
+		<!--充值之修改账户余额  -->
+		<update id="umony" parameterType="map">
+			update user set money=#{money} where phone=#{phone}
+		</update>
+		
+		
+		
+		<!-- 添加留言 -->
+		<insert id="jialiuyan" parameterType="map">
+			insert into message (phone,title,time) value(#{phone},#{title},#{time})
+		</insert>
+		<!-- <select id="liuyan" parameterType="map">
+		select * from message
+		</select> -->
+		<!-- 消费 -->
+		<select id="xiaofei2" parameterType="map" resultType="map">
+			select * from xiaofei where phone=#{phone}
+		</select>
+		<!--用户中心  -->
+	 <select id="yh"  resultType="map" parameterType="map">
+			select  phone,money from user where phone=#{phone}
+		</select>
+		<!-- 留言删除-->
+		<select id="ldelete" parameterType="map">
+			delete from message
+			where id=#{id}
+		</select>
+		
+		
+		<select id="ChaSelect"  resultType="map" >
+			select Did,chazt from dianzhuang1 where chazt=0 
+		</select>
+<!-- 更改插头状态 -->
+		<select id="qiang"   parameterType="map">
+			update dianzhuang1 set chazt = 1 where Did=#{Did}
+		</select>
+		
+		
+		<!-- 查询充电桩所有信息 -->
+	<select id="query" parameterType="map" resultType="map">
+	select * from dianzhuang1;
+	</select>
+	<!-- 查询充电桩状态为(充电中)1的所有信息 -->
+	<select id="query1" parameterType="map" resultType="map">
+	select * from dianzhuang1 where chazt=1;
+	</select>
+	<!-- 查询充电桩状态为(空闲)0的所有信息 -->
+	<select id="query0" parameterType="map" resultType="map">
+	select * from dianzhuang1 where chazt=0;
+	</select>
+	<!-- 查询充电桩状态为(故障)0的所有信息 -->
+	<select id="query2" parameterType="map" resultType="map">
+	select * from dianzhuang1 where chazt=2;
+	</select>
+	<!-- 添加电桩 -->
+	<insert id="insert" parameterType="map">
+		insert into dianzhuang1(Dname,Gname,Atime,Dtype,Dguns,Dversion,chazt) values(#{Dname},#{Gname},#{Atime},#{Dtype},#{Dguns},#{Dversion},#{chazt})
+	</insert>
+	<!-- 删除电桩 -->
+	<delete id="deletedz" parameterType="map">
+	delete from dianzhuang1 where Did=#{Did};
+	</delete>
+	<!-- 修改电桩 -->
+	<update id="update" parameterType="map">
+	update dianzhuang1 set chazt=#{chazt} where Did=#{Did};
+	</update>
+	</mapper>  

@@ -1,0 +1,19 @@
+package com.bin.service;
+
+import java.util.Map;
+
+public interface SService{
+
+	//µÇÂ½
+	public Object login(Map map);
+	
+	//×¢²á
+	public Object reg(Map map);
+	
+	//Ê×Ò³
+	public Object form(Map map);
+	//µç×®
+	public Object dianzhuang(Map map);
+	//ÁôÑÔ
+	public Object liuyan(Map map); 
+}

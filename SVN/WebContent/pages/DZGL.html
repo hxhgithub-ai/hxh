@@ -1,0 +1,1015 @@
+
+<html>
+<head>
+<meta charset="UTF-8">
+<title>选项卡</title>
+<link rel="stylesheet" href="../pages/layui/css/layui.css">
+<script src="../pages/layui/layui.js"></script>
+<script src="../js/jquery-1.8.3.js"></script>
+<script>
+	//Demo
+	layui.use(['element','layer'], function() {
+		var element = layui.element
+		,layer=layui.layer;
+		 element.on('tab(docDemoTabBrief)', function(data){
+			    layer.msg('切到到了：' + this.innerHTML);
+			  });
+	});
+</script>
+<script>
+layui.use('element', function(){
+  var element = layui.element;
+  
+  //获取hash来切换选项卡，假设当前地址的hash为lay-id对应的值
+  var layid = location.hash.replace(/^#test1=/, '');
+  element.tabChange('test1', layid); //假设当前地址为：http://a.com#test1=222，那么选项卡会自动切换到“发送消息”这一项
+  
+  //监听Tab切换，以改变地址hash值
+  //hash值：http://localhost:8088/Demo_Layui/script/XuanXiangKa.html#test1=111
+  element.on('tab(test1)', function(){
+    location.hash = 'test1='+ this.getAttribute('lay-id');
+  });
+});
+</script>
+
+
+</head>
+<body>
+	<div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+		<ul class="layui-tab-title">
+			<!-- class="layui-this" 默认显示此卡片内容 -->
+			<li class="layui-this" id="quan">全部充电桩</li>
+			<li>充电中</li>
+			<li>空闲</li>
+			<li>离线</li>
+			<li><i class="layui-icon" style="font-size: 20px">&#xe608;</i><span
+				style="font-size: 20px;">添加设备</span></li>
+		</ul>
+		<div class="layui-tab-content">
+			<div class="layui-tab-item">
+				<form id="form">
+					<table class="layui-table" lay-skin="line" lay-size="lg" lay-even
+						id="tablebody">
+						<colgroup>
+							<col width="150">
+							<col width="200">
+						</colgroup>
+						<thead>
+							<tr>
+								<th>设备编号</th>
+								<th>设备名称</th>
+								<th>管理员名</th>
+								<th>安装时间</th>
+								<th>电流类型</th>
+								<th>插口数量</th>
+								<th>电桩版本</th>
+								<th>电桩状态</th>
+								<th>操作</th>
+							</tr>
+						</thead>
+					</table>
+					<a id="btn0"></a> <input id="pageSize" type="text" size="1"
+						maxlength="2" value="getDefaultValue()" /><a> 条 </a> <a href="#"
+						id="pageSizeSet">设置</a> <a id="sjzl"></a> <a href="#" id="btn1">首页</a>
+					<a href="#" id="btn2">上一页</a> <a href="#" id="btn3">下一页</a> <a
+						href="#" id="btn4">尾页</a> <a>转到 </a> <input id="changePage"
+						type="text" size="1" maxlength="4" /> <a>页 </a> <a href="#"
+						id="btn5">跳转</a>
+					<button type="button">导出</button>
+				</form>
+				<script type="text/javascript">
+		$(document).ready(function() {
+							$.ajax({
+										url : '/SSM1109test1/test/query',
+										type : 'post',
+										dataType : 'json',
+										success : function(data) {
+											for ( var i in data) {
+												var tr = "<tr><td>"
+														+ data[i].Did
+														+ "</td><td>"
+														+ data[i].Dname
+														+ "</td><td>"
+														+ data[i].Gname
+														+"</td><td>"
+														+ data[i].Atime
+														+"</td><td>"
+														+ data[i].Dtype
+														+"</td><td>"
+														+ data[i].Dguns
+														+"</td><td>"
+														+ data[i].Dversion
+														+"</td><td>"
+														+ data[i].chazt
+														+ "</td><td><button type='button' onclick='delete1("
+														+ data[i].Did
+														+ ")'><i class='layui-icon'>&#xe640;</i></button>&nbsp;<button><a href='update.html'><i class='layui-icon'>&#xe642;</i></a></button></td></tr>";
+												$("#tablebody").append(tr) 
+											}
+											
+										}
+							
+									})
+									
+						});
+
+		function delete1(Did) {
+			$.ajax({
+				url : "/SSM1109test1/test/deletedz?Did=" + Did,
+				type : "post",
+				dataType : "text",
+				success : function(data) {//data就是后台返回的返回值
+					if (data === 'success') {
+						layer.msg('成功删除', {icon: 1,shade: [0.5,'#333333']},function(index){
+							location.href='DZGL.html';
+
+							layer.close(index);
+
+							});
+						
+					}
+				}
+			});
+		}
+	
+	</script>
+				<!-- 分页 -->
+				<script type="text/javascript">
+            var pageSize = 8;    //每页显示的记录条数
+             var curPage=1;        //当前页
+             var lastPage;        //最后页
+             var direct=0;        //方向
+            var len;            //总行数
+            var page;            //总页数
+            var begin;
+            var end;
+            $(document).ready(function() {
+				$.ajax({
+							url : '/SSM1109test1/test/query',
+							type : 'post',
+							dataType : 'json',
+							success : function(data) {
+								for ( var i in data) {
+									var tr = "<tr><td>"
+										+ data[i].Did
+										+ "</td><td>"
+										+ data[i].Dname
+										+ "</td><td>"
+										+ data[i].Gname
+										+"</td><td>"
+										+ data[i].Atime
+										+"</td><td>"
+										+ data[i].Dtype
+										+"</td><td>"
+										+ data[i].Dguns
+										+"</td><td>"
+										+ data[i].Dversion
+										+"</td><td>"
+										+ data[i].chazt
+										+ "</td><td><button type='button' onclick='delete1("
+										+ data[i].Did
+										+ ")'><i class='layui-icon'>&#xe640;</i></button>&nbsp;<button><a href='update.html'><i class='layui-icon'>&#xe642;</i></a></button></td></tr>";
+										
+								}		
+								 
+                len =$("#tablebody tr").length - 1;    // 求这个表的总行数，剔除第一行介绍
+                page=len % pageSize==0 ? len/pageSize : Math.floor(len/pageSize)+1;//根据记录条数，计算页数
+                // alert("page==="+page);
+                curPage=1;    // 设置当前为第一页
+                displayPage(1);//显示第一页
+
+                document.getElementById("btn0").innerHTML="当前 " + curPage + "/" + page + " 页    每页 ";    // 显示当前多少页
+                document.getElementById("sjzl").innerHTML="数据总量 " + len + "";        // 显示数据量
+                document.getElementById("pageSize").value = pageSize;
+                $("#btn1").click(function firstPage(){    // 首页
+                    curPage=1;
+                    direct = 0;
+                    displayPage();
+                });
+                $("#btn2").click(function frontPage(){    // 上一页
+                    direct=-1;
+                    displayPage();
+                });
+                $("#btn3").click(function nextPage(){    // 下一页
+                    direct=1;
+                    displayPage();
+                });
+                $("#btn4").click(function lastPage(){    // 尾页
+                    curPage=page;
+                    direct = 0;
+                    displayPage();
+                });
+                $("#btn5").click(function changePage(){    // 转页
+                    curPage=document.getElementById("changePage").value * 1;
+                    if (!/^[1-9]\d*$/.test(curPage)) {
+                        alert("请输入正整数");
+                        return ;
+                    }
+                    if (curPage > page) {
+                        alert("超出数据页面");
+                        return ;
+                    }
+                    direct = 0;
+                    displayPage();
+                });
+                $("#pageSizeSet").click(function setPageSize(){    // 设置每页显示多少条记录
+                    pageSize = document.getElementById("pageSize").value;    //每页显示的记录条数
+                    if (!/^[1-9]\d*$/.test(pageSize)) {
+                        alert("请输入正整数");
+                        return ;
+                    }
+                    len =$("#tablebody tr").length - 1;
+                    page=len % pageSize==0 ? len/pageSize : Math.floor(len/pageSize)+1;//根据记录条数，计算页数
+                    curPage=1;        //当前页
+                     direct=0;        //方向
+                     firstPage();
+                });
+                
+                    }
+				
+        		})
+        		$("#tablebody").append;
+            });
+
+            function displayPage(){
+                if(curPage <=1 && direct==-1){
+                    direct=0;
+                    alert("已经是第一页了");
+                    return;
+                } else if (curPage >= page && direct==1) {
+                    direct=0;
+                    alert("已经是最后一页了");
+                    return ;
+                }
+                lastPage = curPage;
+                // 修复当len=1时，curPage计算得0的bug
+                if (len > pageSize) {
+                    curPage = ((curPage + direct + len) % len);
+                } else {
+                    curPage = 1;
+                }
+                document.getElementById("btn0").innerHTML="当前 " + curPage + "/" + page + " 页    每页 ";        // 显示当前多少页
+                begin=(curPage-1)*pageSize + 1;// 起始记录号
+                end = begin + 1*pageSize - 1;    // 末尾记录号
+                if(end > len ) end=len;
+                $("#tablebody tr").hide();    // 首先，设置这行为隐藏
+                $("#tablebody tr").each(function(i){    // 然后，通过条件判断决定本行是否恢复显示
+                    if((i>=begin && i<=end) || i==0 )//显示begin<=x<=end的记录
+                        $(this).show();
+                });
+
+             }
+    </script>
+
+			</div>
+			<div class="layui-tab-item">
+				<form id="form1">
+					<table class="layui-table" lay-skin="line" lay-size="lg" lay-even
+						id="tablebody1">
+						<colgroup>
+							<col width="150">
+							<col width="200">
+						</colgroup>
+						<thead>
+							<tr>
+								<th>设备编号</th>
+								<th>设备名称</th>
+								<th>管理员名</th>
+								<th>安装时间</th>
+								<th>电流类型</th>
+								<th>插口数量</th>
+								<th>电桩版本</th>
+								<th>电桩状态</th>
+								<th>操作</th>
+							</tr>
+						</thead>
+					</table>
+					<a id="btn00"></a> 
+					<input id="pageSize1" type="text" size="1"
+						maxlength="2" value="getDefaultValue()" /><a> 条 </a> <a href="#"
+						id="pageSizeSet1">设置</a> <a id="sjzl1"></a> <a href="#" id="btn11">首页</a>
+					<a href="#" id="btn22">上一页</a> <a href="#" id="btn33">下一页</a> <a
+						href="#" id="btn44">尾页</a> <a>转到 </a> <input id="changePage1"
+						type="text" size="1" maxlength="4" /> <a>页 </a> <a href="#"
+						id="btn55">跳转</a>
+                         <button type="button">导出</button>
+				</form>
+				
+				<script type="text/javascript">
+		$(document).ready(function() {
+							$.ajax({
+										url : '/SSM1109test1/test/query1',
+										type : 'post',
+										dataType : 'json',
+										success : function(data) {
+											for ( var i in data) {
+												var tr = "<tr><td>"
+														+ data[i].Did
+														+ "</td><td>"
+														+ data[i].Dname
+														+ "</td><td>"
+														+ data[i].Gname
+														+"</td><td>"
+														+ data[i].Atime
+														+"</td><td>"
+														+ data[i].Dtype
+														+"</td><td>"
+														+ data[i].Dguns
+														+"</td><td>"
+														+ data[i].Dversion
+														+"</td><td>"
+														+ data[i].chazt
+														+ "</td><td><button type='button' onclick='delete1("
+														+ data[i].Did
+														+ ")'><i class='layui-icon'>&#xe640;</i></button>&nbsp;<button><a href='update.html'><i class='layui-icon'>&#xe642;</i></a></button></td></tr>";
+												$("#tablebody1").append(tr) 
+											}
+											
+										}
+							
+									})
+									
+						});
+
+		function delete1(Did) {
+			$.ajax({
+				url : "/SSM1109test1/test/deletedz?Did=" + Did,
+				type : "post",
+				dataType : "text",
+				success : function(data) {//data就是后台返回的返回值
+					if (data === 'success') {
+						layer.msg('成功删除', {icon: 1,shade: [0.5,'#333333']},function(index){
+							location.href='DZGL.html';
+
+							layer.close(index);
+
+							});
+						
+					}
+				}
+			});
+		}
+	
+	</script>
+				<!-- 分页 -->
+				<script type="text/javascript">
+            var pageSize1 = 8;    //每页显示的记录条数
+             var curPage1=1;        //当前页
+             var lastPage1;        //最后页
+             var direct1=0;        //方向
+            var len1;            //总行数
+            var page1;            //总页数
+            var begin1;
+            var end1;
+            $(document).ready(function() {
+				$.ajax({
+							url : '/SSM1109test1/test/query1',
+							type : 'post',
+							dataType : 'json',
+							success : function(data) {
+								for ( var i in data) {
+									var tr = "<tr><td>"
+										+ data[i].Did
+										+ "</td><td>"
+										+ data[i].Dname
+										+ "</td><td>"
+										+ data[i].Gname
+										+"</td><td>"
+										+ data[i].Atime
+										+"</td><td>"
+										+ data[i].Dtype
+										+"</td><td>"
+										+ data[i].Dguns
+										+"</td><td>"
+										+ data[i].Dversion
+										+"</td><td>"
+										+ data[i].chazt
+										+ "</td><td><button type='button' onclick='delete1("
+										+ data[i].Did
+										+ ")'><i class='layui-icon'>&#xe640;</i></button>&nbsp;<button><a href='update.html'><i class='layui-icon'>&#xe642;</i></a></button></td></tr>";
+										
+								}		
+								 
+                len1 =$("#tablebody1 tr").length - 1;    // 求这个表的总行数，剔除第一行介绍
+                page1=len1 % pageSize1==0 ? len1/pageSize1 : Math.floor(len1/pageSize1)+1;//根据记录条数，计算页数
+                // alert("page==="+page);
+                curPage1=1;    // 设置当前为第一页
+                displayPage1(1);//显示第一页
+
+                document.getElementById("btn00").innerHTML="当前 " + curPage1 + "/" + page1 + " 页    每页 ";    // 显示当前多少页
+                document.getElementById("sjzl1").innerHTML="数据总量 " + len1 + "";        // 显示数据量
+                document.getElementById("pageSize1").value = pageSize1;
+                $("#btn11").click(function firstPage1(){    // 首页
+                    curPage1=1;
+                    direct1 = 0;
+                    displayPage1();
+                });
+                $("#btn22").click(function frontPage1(){    // 上一页
+                    direct1=-1;
+                    displayPage1();
+                });
+                $("#btn33").click(function nextPage1(){    // 下一页
+                    direct1=1;
+                    displayPage1();
+                });
+                $("#btn44").click(function lastPage1(){    // 尾页
+                    curPage1=page1;
+                    direct1 = 0;
+                    displayPage1();
+                });
+                $("#btn55").click(function changePage1(){    // 转页
+                    curPage1=document.getElementById("changePage1").value * 1;
+                    if (!/^[1-9]\d*$/.test(curPage1)) {
+                        alert("请输入正整数");
+                        return ;
+                    }
+                    if (curPage1 > page1) {
+                        alert("超出数据页面");
+                        return ;
+                    }
+                    direct1 = 0;
+                    displayPage1();
+                });
+                $("#pageSizeSet1").click(function setPageSize1(){    // 设置每页显示多少条记录
+                    pageSize1 = document.getElementById("pageSize1").value;    //每页显示的记录条数
+                    if (!/^[1-9]\d*$/.test(pageSize1)) {
+                        alert("请输入正整数");
+                        return ;
+                    }
+                    len1 =$("#tablebody1 tr").length - 1;
+                    page1=len1 % pageSize1==0 ? len1/pageSize1 : Math.floor(len1/pageSize1)+1;//根据记录条数，计算页数
+                    curPage1=1;        //当前页
+                     direct1=0;        //方向
+                     firstPage1();
+                });
+                
+                    }
+				
+        		})
+        		$("#tablebody1").append;
+            });
+
+            function displayPage1(){
+                if(curPage1 <=1 && direct1==-1){
+                    direct1=0;
+                    alert("已经是第一页了");
+                    return;
+                } else if (curPage1 >= page1 && direct1==1) {
+                    direct1=0;
+                    alert("已经是最后一页了");
+                    return ;
+                }
+                lastPage1 = curPage1;
+                // 修复当len=1时，curPage计算得0的bug
+                if (len1 > pageSize1) {
+                    curPage1 = ((curPage1 + direct1 + len1) % len1);
+                } else {
+                    curPage1 = 1;
+                }
+                document.getElementById("btn00").innerHTML="当前 " + curPage1 + "/" + page1 + " 页    每页 ";        // 显示当前多少页
+                begin1=(curPage1-1)*pageSize1 + 1;// 起始记录号
+                end1 = begin1 + 1*pageSize1 - 1;    // 末尾记录号
+                if(end1 > len1 ) end1=len1;
+                $("#tablebody1 tr").hide();    // 首先，设置这行为隐藏
+                $("#tablebody1 tr").each(function(i){    // 然后，通过条件判断决定本行是否恢复显示
+                    if((i>=begin1 && i<=end1) || i==0 )//显示begin<=x<=end的记录
+                        $(this).show();
+                });
+
+             }
+    </script>
+
+			</div>
+			<div class="layui-tab-item">
+				<form id="form11">
+					<table class="layui-table" lay-skin="line" lay-size="lg" lay-even
+						id="tablebody11">
+						<colgroup>
+							<col width="150">
+							<col width="200">
+						</colgroup>
+						<thead>
+							<tr>
+								<th>设备编号</th>
+								<th>设备名称</th>
+								<th>管理员名</th>
+								<th>安装时间</th>
+								<th>电流类型</th>
+								<th>插口数量</th>
+								<th>电桩版本</th>
+								<th>电桩状态</th>
+								<th>操作</th>
+							</tr>
+						</thead>
+					</table>
+					<a id="btn000"></a> <input id="pageSize11" type="text" size="1"
+						maxlength="2" value="getDefaultValue()" /><a> 条 </a> <a href="#"
+						id="pageSizeSet11">设置</a> <a id="sjzl11"></a> <a href="#"
+						id="btn111">首页</a> <a href="#" id="btn222">上一页</a> <a href="#"
+						id="btn333">下一页</a> <a href="#" id="btn444">尾页</a> <a>转到 </a> <input
+						id="changePage11" type="text" size="1" maxlength="4" /> <a>页 </a>
+					<a href="#" id="btn555">跳转</a>
+                        <button type="button">导出</button>
+				</form>
+				
+				<script type="text/javascript">
+		$(document).ready(function() {
+							$.ajax({
+										url : '/SSM1109test1/test/query0',
+										type : 'post',
+										dataType : 'json',
+										success : function(data) {
+											for ( var i in data) {
+												var tr = "<tr><td>"
+														+ data[i].Did
+														+ "</td><td>"
+														+ data[i].Dname
+														+ "</td><td>"
+														+ data[i].Gname
+														+"</td><td>"
+														+ data[i].Atime
+														+"</td><td>"
+														+ data[i].Dtype
+														+"</td><td>"
+														+ data[i].Dguns
+														+"</td><td>"
+														+ data[i].Dversion
+														+"</td><td>"
+														+ data[i].chazt
+														+ "</td><td><button type='button' onclick='delete1("
+														+ data[i].Did
+														+ ")'><i class='layui-icon'>&#xe640;</i></button>&nbsp;<button><a href='update.html'><i class='layui-icon'>&#xe642;</i></a></button></td></tr>";
+												$("#tablebody11").append(tr) 
+											}
+											
+										}
+							
+									})
+									
+						});
+
+		function delete1(Did) {
+			$.ajax({
+				url : "/SSM1109test1/test/deletedz?Did=" + Did,
+				type : "post",
+				dataType : "text",
+				success : function(data) {//data就是后台返回的返回值
+					if (data === 'success') {
+						layer.msg('成功删除', {icon: 1,shade: [0.5,'#333333']},function(index){
+							location.href='DZGL.html';
+
+							layer.close(index);
+
+							});
+						
+					}
+				}
+			});
+		}
+	
+	</script>
+				<!-- 分页 -->
+				<script type="text/javascript">
+            var pageSize11 = 8;    //每页显示的记录条数
+             var curPage11=1;        //当前页
+             var lastPage11;        //最后页
+             var direct11=0;        //方向
+            var len11;            //总行数
+            var page11;            //总页数
+            var begin11;
+            var end11;
+            $(document).ready(function() {
+				$.ajax({
+							url : '/SSM1109test1/test/query0',
+							type : 'post',
+							dataType : 'json',
+							success : function(data) {
+								for ( var i in data) {
+									var tr = "<tr><td>"
+										+ data[i].Did
+										+ "</td><td>"
+										+ data[i].Dname
+										+ "</td><td>"
+										+ data[i].Gname
+										+"</td><td>"
+										+ data[i].Atime
+										+"</td><td>"
+										+ data[i].Dtype
+										+"</td><td>"
+										+ data[i].Dguns
+										+"</td><td>"
+										+ data[i].Dversion
+										+"</td><td>"
+										+ data[i].chazt
+										+ "</td><td><button type='button' onclick='delete1("
+										+ data[i].Did
+										+ ")'><i class='layui-icon'>&#xe640;</i></button>&nbsp;<button><a href='update.html'><i class='layui-icon'>&#xe642;</i></a></button></td></tr>";
+										
+								}		
+								 
+                len11 =$("#tablebody11 tr").length - 1;    // 求这个表的总行数，剔除第一行介绍
+                page11=len11 % pageSize11==0 ? len11/pageSize11 : Math.floor(len11/pageSize11)+1;//根据记录条数，计算页数
+                // alert("page==="+page);
+                curPage11=1;    // 设置当前为第一页
+                displayPage11(1);//显示第一页
+
+                document.getElementById("btn000").innerHTML="当前 " + curPage11 + "/" + page11 + " 页    每页 ";    // 显示当前多少页
+                document.getElementById("sjzl11").innerHTML="数据总量 " + len11 + "";        // 显示数据量
+                document.getElementById("pageSize11").value = pageSize11;
+                $("#btn111").click(function firstPage11(){    // 首页
+                    curPage11=1;
+                    direct11 = 0;
+                    displayPage11();
+                });
+                $("#btn222").click(function frontPage11(){    // 上一页
+                    direct11=-1;
+                    displayPage11();
+                });
+                $("#btn333").click(function nextPage11(){    // 下一页
+                    direct11=1;
+                    displayPage11();
+                });
+                $("#btn444").click(function lastPage11(){    // 尾页
+                    curPage11=page11;
+                    direct11 = 0;
+                    displayPage11();
+                });
+                $("#btn555").click(function changePage11(){    // 转页
+                    curPage11=document.getElementById("changePage11").value * 1;
+                    if (!/^[1-9]\d*$/.test(curPage11)) {
+                        alert("请输入正整数");
+                        return ;
+                    }
+                    if (curPage11 > page11) {
+                        alert("超出数据页面");
+                        return ;
+                    }
+                    direct11 = 0;
+                    displayPage11();
+                });
+                $("#pageSizeSet11").click(function setPageSize11(){    // 设置每页显示多少条记录
+                    pageSize11 = document.getElementById("pageSize11").value;    //每页显示的记录条数
+                    if (!/^[1-9]\d*$/.test(pageSize11)) {
+                        alert("请输入正整数");
+                        return ;
+                    }
+                    len11 =$("#tablebody11 tr").length - 1;
+                    page11=len11 % pageSize11==0 ? len11/pageSize11 : Math.floor(len11/pageSize11)+1;//根据记录条数，计算页数
+                    curPage11=1;        //当前页
+                     direct11=0;        //方向
+                     firstPage11();
+                });
+                
+                    }
+				
+        		})
+        		$("#tablebody11").append;
+            });
+
+            function displayPage11(){
+                if(curPage11 <=1 && direct11==-1){
+                    direct11=0;
+                    alert("已经是第一页了");
+                    return;
+                } else if (curPage11 >= page11 && direct11==1) {
+                    direct11=0;
+                    alert("已经是最后一页了");
+                    return ;
+                }
+                lastPage11 = curPage11;
+                // 修复当len=1时，curPage计算得0的bug
+                if (len11 > pageSize11) {
+                    curPage11 = ((curPage11 + direct11 + len11) % len11);
+                } else {
+                    curPage11 = 1;
+                }
+                document.getElementById("btn000").innerHTML="当前 " + curPage11 + "/" + page11 + " 页    每页 ";        // 显示当前多少页
+                begin11=(curPage11-1)*pageSize11 + 1;// 起始记录号
+                end11 = begin11 + 1*pageSize11 - 1;    // 末尾记录号
+                if(end11 > len11 ) end11=len11;
+                $("#tablebody11 tr").hide();    // 首先，设置这行为隐藏
+                $("#tablebody11 tr").each(function(i){    // 然后，通过条件判断决定本行是否恢复显示
+                    if((i>=begin11 && i<=end11) || i==0 )//显示begin<=x<=end的记录
+                        $(this).show();
+                });
+
+             }
+    </script>
+			</div>
+			<div class="layui-tab-item">
+				<form id="form111">
+					<table class="layui-table" lay-skin="line" lay-size="lg" lay-even
+						id="tablebody111">
+						<colgroup>
+							<col width="150">
+							<col width="200">
+						</colgroup>
+						<thead>
+							<tr>
+								<th>设备编号</th>
+								<th>设备名称</th>
+								<th>管理员名</th>
+								<th>安装时间</th>
+								<th>电流类型</th>
+								<th>插口数量</th>
+								<th>电桩版本</th>
+								<th>电桩状态</th>
+								<th>操作</th>
+							</tr>
+						</thead>
+					</table>
+					<a id="btn0000"></a> <input id="pageSize111" type="text" size="1"
+						maxlength="2" value="getDefaultValue()" /><a> 条 </a> <a href="#"
+						id="pageSizeSet111">设置</a> <a id="sjzl111"></a> <a href="#"
+						id="btn1111">首页</a> <a href="#" id="btn2222">上一页</a> <a href="#"
+						id="btn3333">下一页</a> <a href="#" id="btn4444">尾页</a> <a>转到 </a> <input
+						id="changePage111" type="text" size="1" maxlength="4" /> <a>页
+					</a> <a href="#" id="btn5555">跳转</a>
+                       <button type="button">导出</button>
+				</form>
+				
+				<script type="text/javascript">
+		$(document).ready(function() {
+							$.ajax({
+										url : '/SSM1109test1/test/query2',
+										type : 'post',
+										dataType : 'json',
+										success : function(data) {
+											for ( var i in data) {
+												var tr = "<tr><td>"
+														+ data[i].Did
+														+ "</td><td>"
+														+ data[i].Dname
+														+ "</td><td>"
+														+ data[i].Gname
+														+"</td><td>"
+														+ data[i].Atime
+														+"</td><td>"
+														+ data[i].Dtype
+														+"</td><td>"
+														+ data[i].Dguns
+														+"</td><td>"
+														+ data[i].Dversion
+														+"</td><td>"
+														+ data[i].chazt
+														+ "</td><td><button type='button' onclick='delete1("
+														+ data[i].Did
+														+ ")'><i class='layui-icon'>&#xe640;</i></button>&nbsp;<button><a href='update.html'><i class='layui-icon'>&#xe642;</i></a></button></td></tr>";
+												$("#tablebody111").append(tr) 
+											}
+											
+										}
+							
+									})
+									
+						});
+
+		function delete1(Did) {
+			$.ajax({
+				url : "/SSM1109test1/test/deletedz?Did=" + Did,
+				type : "post",
+				dataType : "text",
+				success : function(data) {//data就是后台返回的返回值
+					if (data === 'success') {
+						layer.msg('成功删除', {icon: 1,shade: [0.5,'#333333']},function(index){
+							location.href='DZGL.html';
+
+							layer.close(index);
+
+							});
+						
+					}
+				}
+			});
+		}
+	
+	</script>
+				<!-- 分页 -->
+				<script type="text/javascript">
+            var pageSize111 = 8;    //每页显示的记录条数
+             var curPage111=1;        //当前页
+             var lastPage111;        //最后页
+             var direct111=0;        //方向
+            var len111;            //总行数
+            var page111;            //总页数
+            var begin111;
+            var end111;
+            $(document).ready(function() {
+				$.ajax({
+							url : '/SSM1109test1/test/query2',
+							type : 'post',
+							dataType : 'json',
+							success : function(data) {
+								for ( var i in data) {
+									var tr = "<tr><td>"
+										+ data[i].Did
+										+ "</td><td>"
+										+ data[i].Dname
+										+ "</td><td>"
+										+ data[i].Gname
+										+"</td><td>"
+										+ data[i].Atime
+										+"</td><td>"
+										+ data[i].Dtype
+										+"</td><td>"
+										+ data[i].Dguns
+										+"</td><td>"
+										+ data[i].Dversion
+										+"</td><td>"
+										+ data[i].chazt
+										+ "</td><td><button type='button' onclick='delete1("
+										+ data[i].Did
+										+ ")'><i class='layui-icon'>&#xe640;</i></button>&nbsp;<button><a href='update.html'><i class='layui-icon'>&#xe642;</i></a></button></td></tr>";
+										
+								}		
+								 
+                len111 =$("#tablebody111 tr").length - 1;    // 求这个表的总行数，剔除第一行介绍
+                page111=len111 % pageSize111==0 ? len111/pageSize111 : Math.floor(len111/pageSize111)+1;//根据记录条数，计算页数
+                // alert("page==="+page);
+                curPage111=1;    // 设置当前为第一页
+                displayPage111(1);//显示第一页
+
+                document.getElementById("btn0000").innerHTML="当前 " + curPage111 + "/" + page111 + " 页    每页 ";    // 显示当前多少页
+                document.getElementById("sjzl111").innerHTML="数据总量 " + len111 + "";        // 显示数据量
+                document.getElementById("pageSize111").value = pageSize111;
+                $("#btn1111").click(function firstPage111(){    // 首页
+                    curPage111=1;
+                    direct111 = 0;
+                    displayPage111();
+                });
+                $("#btn2222").click(function frontPage111(){    // 上一页
+                    direct111=-1;
+                    displayPage111();
+                });
+                $("#btn3333").click(function nextPage111(){    // 下一页
+                    direct111=1;
+                    displayPage111();
+                });
+                $("#btn4444").click(function lastPage111(){    // 尾页
+                    curPage111=page111;
+                    direct111 = 0;
+                    displayPage111();
+                });
+                $("#btn5555").click(function changePage111(){    // 转页
+                    curPage111=document.getElementById("changePage111").value * 1;
+                    if (!/^[1-9]\d*$/.test(curPage111)) {
+                        alert("请输入正整数");
+                        return ;
+                    }
+                    if (curPage111 > page111) {
+                        alert("超出数据页面");
+                        return ;
+                    }
+                    direct111 = 0;
+                    displayPage111();
+                });
+                $("#pageSizeSet111").click(function setPageSize111(){    // 设置每页显示多少条记录
+                    pageSize111 = document.getElementById("pageSize111").value;    //每页显示的记录条数
+                    if (!/^[1-9]\d*$/.test(pageSize111)) {
+                        alert("请输入正整数");
+                        return ;
+                    }
+                    len111 =$("#tablebody111 tr").length - 1;
+                    page111=len111 % pageSize111==0 ? len111/pageSize111 : Math.floor(len111/pageSize111)+1;//根据记录条数，计算页数
+                    curPage111=1;        //当前页
+                     direct111=0;        //方向
+                     firstPage111();
+                });
+                
+                    }
+				
+        		})
+        		$("#tablebody111").append;
+            });
+
+            function displayPage111(){
+                if(curPage111 <=1 && direct111==-1){
+                    direct111=0;
+                    alert("已经是第一页了");
+                    return;
+                } else if (curPage111 >= page111 && direct111==1) {
+                    direct111=0;
+                    alert("已经是最后一页了");
+                    return ;
+                }
+                lastPage111 = curPage111;
+                // 修复当len=1时，curPage计算得0的bug
+                if (len111 > pageSize111) {
+                    curPage111 = ((curPage111 + direct111 + len111) % len111);
+                } else {
+                    curPage111 = 1;
+                }
+                document.getElementById("btn0000").innerHTML="当前 " + curPage111 + "/" + page111 + " 页    每页 ";        // 显示当前多少页
+                begin111=(curPage111-1)*pageSize111 + 1;// 起始记录号
+                end111 = begin111 + 1*pageSize111 - 1;    // 末尾记录号
+                if(end111 > len111 ) end111=len111;
+                $("#tablebody111 tr").hide();    // 首先，设置这行为隐藏
+                $("#tablebody111 tr").each(function(i){    // 然后，通过条件判断决定本行是否恢复显示
+                    if((i>=begin111 && i<=end111) || i==0 )//显示begin<=x<=end的记录
+                        $(this).show();
+                });
+
+             }
+    </script>
+			</div>
+			<div class="layui-tab-item">
+				<script type="text/javascript">
+function dianji() {
+	$.ajax({
+		url:'/SSM1109test1/test/insert',
+		type:'post',
+		data:$('#myform').serialize(),
+		datatype:'text',
+		success:function(data){
+			if(data==='success'){
+				layer.msg('成功添加', {icon: 1,shade: [0.5,'#333333']},function(index){
+					location.href='DZGL.html';
+
+					layer.close(index);
+
+					});
+			}else{
+				layer.msg('添加失败', {icon: 1,shade: [0.5,'#333333']},function(index){
+					location.href='DZGL.html';
+
+					layer.close(index);
+
+					});
+			}
+		}
+	});
+}
+
+</script>
+				<form id="myform" class="layui-form" method="post">
+
+
+					<div class="layui-form-item">
+						<label class="layui-form-label">设备名称:</label>
+						<div class="layui-input-inline">
+							<input type="text" class="layui-input" name="Dname" required
+								lay-verify="required" value="C001" autocomplete="off">
+						</div>
+					</div>
+
+
+
+					<div class="layui-form-item">
+						<label class="layui-form-label">管理员名:</label>
+						<div class="layui-input-inline">
+							<input type="text" class="layui-input" name="Gname" required
+								lay-verify="required" placeholder="请输入管理员姓名" autocomplete="off">
+						</div>
+					</div> 
+					
+					<div class="layui-form-item">
+						<label class="layui-form-label">安装时间:</label>
+						<div class="layui-input-inline">
+							<input type="text" class="layui-input" name="Atime" required
+								lay-verify="required" placeholder="请输入安装时间" autocomplete="off">
+						</div>
+					</div>
+					
+					<div class="layui-form-item">
+						<label class="layui-form-label">电流类型:</label>
+						<div class="layui-input-inline">
+							<input type="text" class="layui-input" name="Dtype" required
+								lay-verify="required" value="交流" autocomplete="off">
+						</div>
+					</div>
+					
+					<div class="layui-form-item">
+						<label class="layui-form-label">充电枪数:</label>
+						<div class="layui-input-inline">
+							<input type="text" class="layui-input" name="Dguns" required
+								lay-verify="required" value="2" autocomplete="off">
+						</div>
+					</div>
+					
+					<div class="layui-form-item">
+						<label class="layui-form-label">电桩版本:</label>
+						<div class="layui-input-inline">
+							<input type="text" class="layui-input" name="Dversion" required
+								lay-verify="required" placeholder="请输入版本号" autocomplete="off">
+						</div>
+					</div> 
+					
+					<div class="layui-form-item">
+						<label class="layui-form-label">电桩状态:</label>
+						<div class="layui-input-inline">
+							<input type="text" class="layui-input" name="chazt" required
+								lay-verify="required" value="0" autocomplete="off">
+						</div>
+					</div>
+
+
+				</form>
+				<button class="layui-btn" type="button" onclick="dianji()"
+					style="margin-left: 100px;">确认添加</button>
+			</div>
+		</div>
+	</div>
+
+</body>
+
+</html>

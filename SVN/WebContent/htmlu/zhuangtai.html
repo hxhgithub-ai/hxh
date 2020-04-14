@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="UTF-8">
+<title>充电中</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+<meta name="description" content="">
+<meta name="author" content="">
+<link rel="stylesheet" href="../assets/css/reset.css">
+ <link rel="stylesheet" href="../assets/css/supersized.css">
+ <link rel="stylesheet" href="../assets/css/style.css">
+ 
+<style type="text/css">
+body{
+background:url(../assets/img/1.jpg) repeat; 
+
+}
+.big{
+width: 450px;
+height: 600px;
+margin-left: 20px;
+margin-top: 15px;
+}
+.ying{
+width: 450px;
+height: 150px;
+margin-top: 30px;
+margin-left: 10px;
+text-align:left;
+line-height: 60px;
+float: left;
+
+background-color:#C3AC9C; opacity: 0.8;
+}
+
+.jin{
+float:left;
+width: 150px;
+height: 150px;
+border: 1px #fff solid;
+margin-top:230px;
+margin-left:-290px; 
+text-align:center;
+line-height: 150px;
+border-radius: 100px;/*div的边角*/
+}
+.b2{
+	width: 320px;
+    height: 42px;
+    float: left;
+    margin-top: 25px;
+    margin-left: 18px;
+}
+.li{
+width: 410px;
+height: 50px;
+float: left;
+margin-left: 220px;
+margin-top: -20px;
+
+}
+.ying1{
+width: 350px;
+height: 100px;
+border-top: 1px #fff solid;
+float: left;
+margin-top: 280px;
+margin-left: 50px;
+ 
+}
+</style>
+</head>
+<body>
+<div class="big">
+	<div class="ying">
+	 <h2>&nbsp;&nbsp;瑞之农贸市场(1端口)</h2>
+	 <table>
+	 	<h2>&nbsp;&nbsp;编号<table id="tableName"></table>接口</h2>
+	 </table>
+	<div class="li">服务热线:17760796332</div>
+	</div>
+	
+	<div class="jin">
+	<h2>正在充电...</h2>
+	</div>
+	 
+	<div class="ying1">
+    <a href="/SSM1109test1/htmlu/index.html"><button type="button" class="b2" onclick="queren()">返回首页</button></a>
+    <a href="/SSM1109test1/htmlu/cmony.html"><button type="button" class="b2" onclick="queren()">充值页面</button></a>
+	</div>
+	
+</div>
+</body>
+<script type="text/javascript">
+//获取id并打印到页面上
+var xx=document.getElementById('v1').value;
+	/* alert("充电桩编号："+xx); */
+document.getElementById("tableName").innerHTML = "<tr><td>"+xx+"</td></tr>";
+</script>
+
+</html>

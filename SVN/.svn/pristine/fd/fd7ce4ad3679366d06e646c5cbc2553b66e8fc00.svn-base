@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd 
+                        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd 
+                        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+	
+	<!-- 扫描文件 -->
+	<!--  spring 可以自动去扫描 base-package下面的包或子包下面的Java文件，如果扫描到有Spring的相关
+注解的类，则把这些类注册为Spring的bean -->
+	<context:component-scan base-package="com.bin"></context:component-scan>
+	<!--设置配置方案 -->
+	<mvc:annotation-driven></mvc:annotation-driven>
+	
+	<!-- 静态资源处理 -->
+	<mvc:resources location="/html/" mapping="/html/**"/>
+	
+	<mvc:default-servlet-handler/>
+	
+    <!-- 配置数据源 -->
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+	        <property name="url"  value="jdbc:mysql://127.0.0.1:3306/test"/>
+	        <property name="username"  value="root"/>
+	        <property name="password"  value="root"/>
+	</bean>
+	
+	<!--Mybatis配置部分 -->
+	<!-- 创建mybatis会话工厂(SessionFacory) -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+    	<property name="dataSource" ref="dataSource"></property>
+       <!-- 第二种是：
+       采用mybatis配置文件(mybatis-config.xml)的方式来间接声明mapper.xml文件的位置，
+       同时，这里可以直接定义mapper.xml文件中所用到的各种类的别名 -->
+       <property name="configLocation"  value="classpath:config/s.xml"></property>
+    </bean>
+    <bean  class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<!-- 配置Mybatis接口实现，对应的Mapper -->
+		<property name="basePackage"  value="com.bin.dao" />
+		<property name="sqlSessionFactory"  ref="sqlSessionFactory" />
+	</bean>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	</beans>

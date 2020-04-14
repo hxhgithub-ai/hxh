@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+<link rel="stylesheet" href="../css/bootstrap.css">
+<link href="../iconfont/style.css" type="text/css" rel="stylesheet">
+<link href="../csss/bootstrap.min.css" rel="stylesheet" type="text/css" media="all">
+  <link href="../csss/font-awesome.min.css" rel="stylesheet">
+  <link href="../csss/style.css" rel='stylesheet' type='text/css' media="all">
+<script type="text/javascript" src="/SSM1109test1/jquery-1.8.3.js"></script>
+<script type="text/javascript">
+$(function Ajax() {
+	
+	$("#send").click(function(){
+		$("#resText").load("test.html");
+	});
+	$("#resText").load("test.html .para");
+	//无参数传递，则是get方式
+	$("#resText").load("test.php",function(){
+		
+	});
+	//有参数传递，则是post方式
+	$("#resText").load("test.php",{name:"rain",age:"22"},function(){
+		
+	})
+	$("#resText").load("test.html",function(responseText,responseText,XMLHttpRequest){
+		//responseText	请求返回的内容
+		//responseText	请求状态：success、error、notmodified、timeout4种
+		//XMLHttpRequest	XMLHttpRequest对象
+	})
+	$.get(url[,data][,callback][,type])
+	$("#send").click(function(){
+		$.get("get1.php"  ,{
+			username : $("#username").val(),
+			content : $("#content").val()
+			
+		},回调函数);
+	});
+});
+</script>
+<style type="text/css">
+body {
+color:#fff; font-family:"微软雅黑"; font-size:14px;
+}
+.wrap1{position:absolute; 
+ top:0;
+ right:0; 
+ bottom:0; 
+ left:0; 
+ margin:auto }/*把整个屏幕真正撑开--而且能自己实现居中*/
+.main_content{
+	background:url(../images/main_bg.png) repeat; 
+	margin-left:auto; 
+	margin-right:auto; 
+	text-align:left; 
+	float:none; 
+	border-radius:8px;}
+	@media (min-width:200px){.pd-xs-20{padding:20px;}}
+	@media (min-width:768px){.pd-sm-50{padding:50px;}}
+
+</style>
+</head>
+<body style="background:url(../images/bg.jpg) no-repeat;">
+
+<!-- //banner -->
+  <div class="banner-left-side" id="home">
+    <!-- header -->
+    <div class="headder-top">
+      <!-- nav -->
+      <nav>
+        <div id="logo">
+          <h1>
+            <a href="index.html">OS</a>
+          </h1>
+        </div>
+        <div class="sub-headder position-relative">
+          <h6>
+            <a href="index.html">Organic
+              <br>Store</a>
+          </h6>
+        </div>
+        <label for="drop" class="toggle">Menu</label>
+        <input type="checkbox" id="drop">
+        <ul class="menu mt-2">
+          <li class="active">
+            <a href="index.html">首页</a>
+          </li>
+            <li>
+              <a href="chongdain.html">充电记录</a>
+            </li>
+            <li>
+              <a href="form.html">用户信息</a>
+            </li>
+            <li>
+            <a href="liuyan.html">留言中心</a>
+            </li>
+            <li>
+            
+              <a href="#">充电桩信息</a>
+           </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+
+
+
+
+<div class="container wrap1" style="height:450px;">
+<h2 class=" text-center">留言中心</h2>
+	 	<div class=" col-md-5  pd-sm-50  main_content">
+	 	
+	<div class="comment">
+		<h6>张三：</h6>
+		<p class="para">沙发</p>
+	</div>
+	<div class="comment">
+		<h6>李四：</h6>
+		<p class="para">板凳</p>
+	</div>
+	<div class="comment">
+		<h6>王五：</h6>
+		<p class="para">地板</p>
+	</div>
+	 <input type="button" value="Ajax获取" id="send"/>
+	 <div class="comment">已有评论：</div>
+	 <div id="resText"></div>
+	 
+	 <form action="form1" action="#">
+	 <p>评论：</p>
+	 <p>姓名：<input type="text" name="username" id="username"/></p>
+	 <p>内容：<textarea name="content" id="content" rows="2" cols="20"></textarea></p>
+	 <p><input type="button" id="send" value="提交"/></p>
+	 </form>
+	 <div class="comment">已有评论：</div>
+	 <div id="resText"></div>
+	 </div>
+</div>
+
+
+
+
+</body>
+
+</html>

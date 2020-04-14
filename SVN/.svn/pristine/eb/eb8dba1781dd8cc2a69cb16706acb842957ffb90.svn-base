@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript" src="/SSM1109test1/jquery-1.8.3.js"></script>
+</head>
+<body>
+  <h1>电桩信息界面</h1>
+  <form id="asd">
+  <table id="dianzhuang">
+     <tr>
+				<td>电桩编号</td>
+			
+				<td>电桩型号</td>
+			
+				<td>电桩类型</td>
+			</tr>
+  </table>
+  </form>
+</body>
+<script type="text/javascript">
+	$(document).ready(function(){
+		$.ajax({
+			url:"/SSM1109test1/test/dian",
+			type:'post',
+			data:$('#asd').serialize(),
+			dataType:'json',
+			success:function(data){
+				for(var i=0;i<data.length;i++){
+					context = "<tr><td>"+data[i].id+"</td><td>"+data[i].xing+"</td><td>"+data[i].lei+"</td></tr>";
+					$("#dianzhuang").append(context);
+				}
+				
+			}
+		});
+	})
+	</script>
+</html>

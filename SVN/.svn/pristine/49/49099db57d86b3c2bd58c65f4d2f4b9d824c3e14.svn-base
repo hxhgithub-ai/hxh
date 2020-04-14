@@ -1,0 +1,91 @@
+package com.bin.controller;
+
+import java.sql.ResultSet;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.alibaba.fastjson.JSON;
+import com.bin.service.SService;
+
+
+@Controller
+@Scope("prototype")
+@RequestMapping("test")
+public class SController {
+		@Autowired
+		SService service;
+		
+		//登陆
+		@RequestMapping("/index")
+		@ResponseBody
+		public String index(@RequestParam Map map ,HttpServletRequest req) {
+			System.out.println("登陆controller");
+			System.out.println(map.toString());
+			HttpSession session =req.getSession();
+			String username =req.getParameter("name");
+			if(map.containsKey(username)) {
+				System.out.println("该用户已存在");
+				System.out.println("map:"+map);
+				
+			}else {
+				System.out.println("非登录");
+			}
+			return service.login(map).toString();
+		}
+		
+		//注册
+		@RequestMapping("/reg")
+		@ResponseBody
+		public String reg(@RequestParam Map map) {
+			System.out.println("注册controller");
+			System.out.println(map.toString());
+			return service.reg(map).toString();
+		}
+		
+		//首页
+		@RequestMapping("/form")
+		@ResponseBody
+		public String form(@RequestParam Map map) {
+			System.out.println("首页Controller");
+			Object list = service.form(map);
+			System.out.println(list.toString());
+			String json = JSON.toJSONString(list);
+			System.out.println(json);
+			return json;
+		}
+		//电桩信息
+				@RequestMapping(value="/dian")
+				@ResponseBody
+				public String dianzhuang(@RequestParam Map map) {
+					System.out.println("进入电桩信息查询");
+					Object list = service.dianzhuang(map);
+					System.out.println(list.toString());
+					String json = JSON.toJSONString(list);
+					System.out.println(json);
+					return json;
+				}
+		//留言中心
+				@RequestMapping(value="liu")
+				@ResponseBody
+				public String liuyan(@RequestParam Map map) {
+					System.out.println("进入留言中心查看留言");
+					Object list = service.liuyan(map);
+					System.out.println(list.toString());
+					String json = JSON.toJSONString(list);
+					System.out.println(json);
+					return json;
+					
+				}
+
+}

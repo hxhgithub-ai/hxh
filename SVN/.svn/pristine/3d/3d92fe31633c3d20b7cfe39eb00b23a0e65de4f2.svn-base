@@ -1,0 +1,67 @@
+package com.bin.controller;
+
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.alibaba.fastjson.JSON;
+import com.bin.service.SService;
+
+
+@Controller
+@Scope("prototype")
+@RequestMapping("test")
+public class SController {
+		@Autowired
+		SService service;
+		
+		//µÇÂ½
+		@RequestMapping("/index")
+		@ResponseBody
+		public String index(@RequestParam Map map ,HttpServletRequest req) {
+			System.out.println("µÇÂ½controller");
+			System.out.println(map.toString());
+			HttpSession session =req.getSession();
+			String username =req.getParameter("name");
+			if(map.containsKey(username)) {
+				System.out.println("¸ÃÓÃ»§ÒÑ´æÔÚ");
+				System.out.println("map:"+map);
+				
+			}else {
+				System.out.println("·ÇµÇÂ¼");
+			}
+			return service.login(map).toString();
+		}
+		
+		//×¢²á
+		@RequestMapping("/reg")
+		@ResponseBody
+		public String reg(@RequestParam Map map) {
+			System.out.println("×¢²ácontroller");
+			System.out.println(map.toString());
+			return service.reg(map).toString();
+		}
+		
+		//Ê×Ò³
+		@RequestMapping("/form")
+		@ResponseBody
+		public String form(@RequestParam Map map) {
+			System.out.println("Ê×Ò³Controller");
+			Object list = service.form(map);
+			System.out.println(list.toString());
+			String json = JSON.toJSONString(list);
+			System.out.println(json);
+			return json;
+		}
+
+}

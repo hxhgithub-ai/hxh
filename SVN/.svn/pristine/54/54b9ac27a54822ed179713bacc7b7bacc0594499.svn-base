@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+
+<script type="text/javascript" src="/SSM1109test1/jquery-1.8.3.js"></script>
+
+
+</style>
+</head>
+
+
+<!-- //banner -->
+  <div class="banner-left-side" id="home">
+    <!-- header -->
+    <div class="headder-top">
+      <!-- nav -->
+      <nav>
+        <div id="logo">
+          <h1>
+            <a href="index.html">KH</a>
+          </h1>
+        </div>
+        <div class="sub-headder position-relative">
+          <h6>
+            <a href="index.html">Kai
+              <br>Huang</a>
+          </h6>
+        </div>
+        <label for="drop" class="toggle">Menu</label>
+        <input type="checkbox" id="drop">
+        <ul class="menu mt-2">
+          <li class="active">
+            <a href="index.html">首页</a>
+          </li>
+            <li>
+              <a href="chongdain.html">充电记录</a>
+            </li>
+            <li>
+              <a href="form.html">用户信息</a>
+            </li>
+            <li>
+            <a href="liuyan.html">留言中心</a>
+            </li>
+            <li>
+              <a href="dianzhuang.html">充电桩信息</a>
+           </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+
+
+<div class="container wrap1" style="height:450px;">
+		<h2 class=" text-center">凯煌公司充电记录</h2>
+
+	 	<form id="xiao">
+			<table id="xiaofei">
+				<tr>
+					<td>充电编码&nbsp;&nbsp;</td>
+					<td>开始时间&nbsp;&nbsp;</td>
+					<td>结束时间&nbsp;&nbsp;</td>
+					<td>充电量/度&nbsp;&nbsp;</td>
+					<td>消费金额/元&nbsp;&nbsp;</td>
+					<td>车辆总电量/度&nbsp;&nbsp;</td>
+					<td>充电结束时车辆SOC/度</td>
+				</tr>
+			</table>
+		</form>
+
+</body>
+<script type="text/javascript">
+$(document).ready(function(){
+	$.ajax({
+		url:"/SSM1109test1/test/xiao",
+		type:"post",
+		data:$('#xiao').serialize(),
+		datatype:'json',
+		success:function(data){
+			var msg=eval("("+data+")");
+			var html=[]; 
+			for(var i=0;i<msg.length;i++){
+				
+				//context =context+"<tr><td>"+msg[i].id+"</td><td>"+msg[i].str+"</td><td>"+msg[i].end+"</td><td>"+msg[i].chong+"</td><td>"+msg[i].xiao+"</td><td>"+msg[i].zong+"</td><td>"+msg[i].soc+"</td></tr>";
+				html.push("<tr><td>"+msg[i].id+"</td>");
+				html.push("<td>"+msg[i].str+"</td>");
+				html.push("<td>"+msg[i].end+"</td>");
+				html.push("<td>"+msg[i].chong+"</td>");
+				html.push("<td>"+msg[i].xiao+"</td>");
+				html.push("<td>"+msg[i].zong+"</td>");
+				html.push("<td>"+msg[i].soc+"</td></tr>");
+				
+				$("#xiaofei").append(html.join(""));
+			}
+			
+			
+		}
+	});
+})
+</script>
+</html>

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script type="text/javascript" src="/SSM1109test1/js/jquery-1.8.3.js"></script>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<title>Insert title here</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+<meta name="description" content="">
+<meta name="author" content="">
+<link rel="stylesheet" href="../assets/css/reset.css">
+ <link rel="stylesheet" href="../assets/css/supersized.css">
+ <link rel="stylesheet" href="../assets/css/style.css">
+<style type="text/css">
+body{
+background:url(../assets/img/1.jpg) repeat; 
+
+}
+input[type="radio"] {
+    display: none;
+}
+input[type="radio"]+span {
+    display: inline-block;
+    width: 150px;
+    height: 50px;
+    font-size: 30px;
+    line-height:50px;
+    text-align: center;
+    border: 1px solid #999;
+    background-color: #fff;
+}
+input[type="radio"]:checked+span {
+    border: 1px solid #090;
+    background-color: #6f6;
+}
+.big{
+width: 450px;
+height: 600px;
+margin-left: 20px;
+margin-top: 15px;
+
+}
+.one{
+width: 400px;
+height: 100px;
+float: left;
+margin-top: 20px;
+margin-left:20px;
+text-align: center;
+line-height: 100px;
+}
+.ying1{
+width: 350px;
+height: 100px;
+border-top: 1px #fff solid;
+float: left;
+margin-top: 100px;
+margin-left: 50px;
+ 
+}
+.b2{
+	width: 320px;
+    height: 42px;
+    float: left;
+    margin-top: 25px;
+    margin-left: 18px;
+}
+.jin{
+width: 350px;
+height: 200px;
+float: left;
+margin-top: 40px;
+margin-left:50px;
+
+}
+</style>
+</head>
+<body>
+<div class="big">
+	<div class="one">
+	<h1>请确定支付</h1>
+	</div>
+	<form id="asd">
+	<div class="jin">
+	<p id="p"></p>
+	<label><input type="radio" name="fang" checked="checked" value="wei"/><span style="color:black;">微信支付</span></label><br><br><br>
+    <label><input type="radio" name="fang" value="yue"/><span style="color:black;">账户余额</span></label>
+    </div>
+    
+    <div class="ying1">
+		<button type="button" class="b2" onclick="dianji()">确认</button>
+		</div>
+	</form>
+</div>
+</body>
+<script type="text/javascript">
+	$.ajax({
+    	url:"/SSM1109test1/test/jine",
+		type:"post",
+		data:$('#asd').serialize(),
+		datatype:"text",
+		success:function(data){
+			document.getElementById("p").innerHTML="请支付"+data+"元";	
+		}
+    })
+
+    	
+function dianji(){
+	$.ajax({
+		url:"/SSM1109test1/test/zhi",
+		type:"post",
+		data:$('#asd').serialize(),
+		datatype:"text",
+		success:function(data){
+			
+			if(data==="xin"){
+				alert("支付成功");
+				location.href='/SSM1109test1/htmlu/yanzheng.html'
+			}else if(data==="lao"){
+				alert("支付成功");
+				location.href='/SSM1109test1/htmlu/zhuangtai.html'
+			}else if(data==="shibai"){
+				location.href='/SSM1109test1/htmlu/shibai.html'
+			}else if(data==="yue"){
+				alert("已从余额扣除相应金额");
+				location.href='/SSM1109test1/htmlu/zhuangtai.html'
+			}else if(data==="buzu"){
+				alert("余额不足，请重新选择支付方式");
+			}
+			
+		}
+	})
+}
+</script>
+</html>
